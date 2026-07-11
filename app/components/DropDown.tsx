@@ -5,7 +5,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { Ubuntu, Nunito } from "next/font/google";
 import { Ellipsis } from "lucide-react";
 import { FaStar } from "react-icons/fa";
-import { ToggleTaskRead } from "../backend/TaskManager";
+import { ToggleTaskRead } from "../server/TaskManager";
 
 const ubuntu = Ubuntu({
 	subsets: ["latin"],

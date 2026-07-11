@@ -3,7 +3,7 @@ import { ThemeToggle } from "./components/ThemeToggle";
 import * as fonts from "./font/fonts";
 import Settings from "./components/Settings";
 import Accmanager from "./components/accmanager";
-import TaskManager, { UserTasks } from "./backend/TaskManager";
+import TaskManager, { UserTasks } from "./server/TaskManager";
 import { Task } from "./components/Task";
 import { IoSettings } from "react-icons/io5";
 

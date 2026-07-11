@@ -4,7 +4,7 @@ import "./globals.css";
 import { ThemeProviderWrapper } from "./providers/ThemeProvider";
 import { ThemeToggle } from "./components/ThemeToggle";
 import * as fonts from "./font/fonts";
-import "@/app/backend/EmailVerefDel";
+import "@/app/server/EmailVerefDel";
 
 const description =
 	"Customizable minimalist to-do app for focused task management and productivity with Next.js.";

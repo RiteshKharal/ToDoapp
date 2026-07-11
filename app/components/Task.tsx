@@ -5,7 +5,7 @@ import TaskManager, {
 	DeleteTask,
 	ToggleTaskRead,
 	UserTasks,
-} from "../backend/TaskManager";
+} from "../server/TaskManager";
 
 import { useSession } from "@/app/lib/auth-client";
 import { NavigationDropDown } from "./DropDown";
@@ -14,7 +14,7 @@ import {
 	LocalTaskManager,
 	LocalToggleTaskRead,
 	LocalUserTasks,
-} from "../backend/LocalTaskManager";
+} from "../server/LocalTaskManager";
 
 export function TaskCard({
 	id,

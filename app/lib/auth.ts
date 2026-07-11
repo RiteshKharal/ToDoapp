@@ -19,6 +19,12 @@ export const auth = betterAuth({
 		provider: "postgresql",
 	}),
 	plugins: [dash()],
+	session: {
+		cookieCache: {
+			enabled: true,
+			maxAge: 60 * 15, // 15 minutes, This parameter is in seconds lul
+		},
+	},
 
 	emailAndPassword: {
 		enabled: true,
