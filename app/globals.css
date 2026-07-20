@@ -80,10 +80,7 @@ body {
 		color 0.3s ease;
 }
 
-.ColorThemeCard {
-	@apply w-10 h-10 rounded-full border border-border cursor-pointer
-         transition-transform transform hover:scale-110;
-}
+
 
 input[type="date"]::-moz-calendar-picker-indicator {
 	color: hsl(var(--foreground));

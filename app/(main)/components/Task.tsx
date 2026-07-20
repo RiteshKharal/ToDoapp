@@ -1,20 +1,20 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import * as fonts from "../font/fonts";
+import * as fonts from "../../font/fonts";
 import TaskManager, {
 	DeleteTask,
 	ToggleTaskRead,
 	UserTasks,
-} from "../server/TaskManager";
+} from "../../../server/TaskManager";
 
-import { useSession } from "@/app/lib/auth-client";
+import { useSession } from "@/lib/auth-client";
 import { NavigationDropDown } from "./DropDown";
 import {
 	LocalDeleteTask,
 	LocalTaskManager,
 	LocalToggleTaskRead,
 	LocalUserTasks,
-} from "../server/LocalTaskManager";
+} from "../../../server/LocalTaskManager";
 
 export function TaskCard({
 	id,
@@ -167,10 +167,10 @@ export function Task() {
 					TaskDueTime: val.date,
 				}).forEach(([k, v]) => formData.append(k, String(v)));
 
-				console.log('form',Object.fromEntries(formData))
+				console.log("form", Object.fromEntries(formData));
 
 				const result = await TaskManager(formData);
-				console.log('res',result)
+				console.log("res", result);
 
 				if (result?.toLowerCase() === "success") {
 					LocalTasks[i].draft = false;

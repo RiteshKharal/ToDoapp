@@ -1,5 +1,5 @@
 import { betterAuth } from "better-auth";
-import { PrismaClient } from "../generated/prisma/client";
+import { PrismaClient } from "../app/generated/prisma/client";
 import { prismaAdapter } from "@better-auth/prisma-adapter";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { dash } from "@better-auth/infra";
@@ -13,6 +13,8 @@ const adapter = new PrismaPg({
 export const prisma = new PrismaClient({
 	adapter,
 });
+
+// TODO: Use global prisma var
 
 export const auth = betterAuth({
 	database: prismaAdapter(prisma, {

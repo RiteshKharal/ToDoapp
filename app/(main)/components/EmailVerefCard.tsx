@@ -1,7 +1,7 @@
 "use client";
 import * as fonts from "@/app/font/fonts";
 import { Check, X } from "lucide-react";
-import { sendVerificationEmail } from "../lib/auth-client";
+import { sendVerificationEmail } from "../../../lib/auth-client";
 import { useEffect, useState } from "react";
 
 export function EmailVerefCard({

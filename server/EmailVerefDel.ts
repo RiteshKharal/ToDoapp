@@ -1,5 +1,5 @@
 import cron from 'node-cron';
-import { prisma } from '@/app/lib/auth';
+import { prisma } from '@/lib/auth';
 
 const BATCH_SIZE = 500;
 

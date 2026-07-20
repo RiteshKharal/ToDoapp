@@ -3,7 +3,7 @@ import React, { useState, useEffect, ReactElement } from "react";
 import * as fonts from "@/app/font/fonts";
 import { MdAccountCircle } from "react-icons/md";
 import { redirect, useRouter } from "next/navigation";
-import { signIn, signUp, useSession } from "../lib/auth-client";
+import { signIn, signUp, useSession } from "../../../lib/auth-client";
 import { Loader, X, Check } from "lucide-react";
 import { EmailVerefCard } from "./EmailVerefCard";
 

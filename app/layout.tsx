@@ -2,9 +2,11 @@ import type { Metadata, Viewport } from "next";
 
 import "./globals.css";
 import { ThemeProviderWrapper } from "./providers/ThemeProvider";
-import { ThemeToggle } from "./components/ThemeToggle";
+import { ThemeToggle } from "./(main)/components/ThemeToggle";
 import * as fonts from "./font/fonts";
-import "@/app/server/EmailVerefDel";
+import "@/server/EmailVerefDel";
+import { GetSettings } from "@/server/settings/actions";
+import { SettingsProvider } from "./hooks/useSettings";
 
 const description =
 	"Customizable minimalist to-do app for focused task management and productivity with Next.js.";
@@ -125,17 +127,21 @@ export const generateViewport = (): Viewport => ({
 	colorScheme: "light dark",
 });
 
-export default function RootLayout({
+export default async function RootLayout({
 	children,
 }: Readonly<{
 	children: React.ReactNode;
 }>) {
+	const settings = await GetSettings({});
+	
 	return (
 		<html lang="en" suppressHydrationWarning>
 			<body
 				className={`top-10 antialiased ${fonts.geistMono.className} bg-background/50  font-sans text-foreground`}
 			>
-				<ThemeProviderWrapper>{children}</ThemeProviderWrapper>
+				<ThemeProviderWrapper>
+					<SettingsProvider initial={settings!}>{children}</SettingsProvider>
+				</ThemeProviderWrapper>
 			</body>
 		</html>
 	);

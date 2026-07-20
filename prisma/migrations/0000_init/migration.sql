@@ -1,19 +1,30 @@
-/*
-  Warnings:
+-- CreateSchema
+CREATE SCHEMA IF NOT EXISTS "public";
 
-  - You are about to drop the column `password` on the `user` table. All the data in the column will be lost.
-  - Made the column `date` on table `task` required. This step will fail if there are existing NULL values in that column.
+-- CreateTable
+CREATE TABLE "task" (
+    "id" SERIAL NOT NULL,
+    "title" TEXT NOT NULL,
+    "description" TEXT,
+    "date" TEXT NOT NULL,
+    "read" BOOLEAN NOT NULL DEFAULT false,
+    "userId" TEXT NOT NULL,
 
-*/
--- AlterTable
-ALTER TABLE "task" ALTER COLUMN "date" SET NOT NULL;
+    CONSTRAINT "task_pkey" PRIMARY KEY ("id")
+);
 
--- AlterTable
-ALTER TABLE "user" DROP COLUMN "password",
-ADD COLUMN     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-ADD COLUMN     "emailVerified" BOOLEAN NOT NULL DEFAULT false,
-ADD COLUMN     "image" TEXT,
-ADD COLUMN     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP;
+-- CreateTable
+CREATE TABLE "user" (
+    "id" TEXT NOT NULL,
+    "email" TEXT NOT NULL,
+    "name" TEXT NOT NULL DEFAULT 'user',
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "emailVerified" BOOLEAN NOT NULL DEFAULT false,
+    "image" TEXT,
+    "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "user_pkey" PRIMARY KEY ("id")
+);
 
 -- CreateTable
 CREATE TABLE "session" (
@@ -61,10 +72,13 @@ CREATE TABLE "verification" (
 );
 
 -- CreateIndex
-CREATE INDEX "session_userId_idx" ON "session"("userId");
+CREATE UNIQUE INDEX "user_email_key" ON "user"("email");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "session_token_key" ON "session"("token");
+
+-- CreateIndex
+CREATE INDEX "session_userId_idx" ON "session"("userId");
 
 -- CreateIndex
 CREATE INDEX "account_userId_idx" ON "account"("userId");
@@ -73,7 +87,11 @@ CREATE INDEX "account_userId_idx" ON "account"("userId");
 CREATE INDEX "verification_identifier_idx" ON "verification"("identifier");
 
 -- AddForeignKey
+ALTER TABLE "task" ADD CONSTRAINT "task_userId_fkey" FOREIGN KEY ("userId") REFERENCES "user"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE "session" ADD CONSTRAINT "session_userId_fkey" FOREIGN KEY ("userId") REFERENCES "user"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "account" ADD CONSTRAINT "account_userId_fkey" FOREIGN KEY ("userId") REFERENCES "user"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
