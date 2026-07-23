@@ -1,11 +1,12 @@
 "use server";
 
-import { auth, prisma } from "@/lib/auth";
+import { auth } from "@/lib/auth";
 import { SettingsType } from "@/types/settings";
 import merge from "deepmerge";
 import { DefaultSettings } from "./default";
 import { headers } from "next/headers";
 import { DeepDiff } from "@/logics/DeepDiff";
+import { prisma } from "@/lib/prisma";
 
 export async function GetSettings({
 	userId,
@@ -49,7 +50,6 @@ export async function UpdateSettings({
 	userId?: string;
 	settings: Partial<SettingsType>;
 }) {
-	console.log("reached");
 	let id = userId;
 
 	if (!userId) {
@@ -64,7 +64,6 @@ export async function UpdateSettings({
 		const merged = merge(DefaultSettings, settings);
 		const NewSettings = DeepDiff(DefaultSettings, merged);
 
-		console.log("merged: ", merged);
 		console.log(NewSettings);
 
 		await prisma.settings.upsert({
@@ -73,10 +72,10 @@ export async function UpdateSettings({
 			},
 			create: {
 				userId: id,
-				data: NewSettings,
+				data: NewSettings || {},
 			},
 			update: {
-				data: NewSettings,
+				data: NewSettings || {},
 			},
 		});
 	} catch (er) {

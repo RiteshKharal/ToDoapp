@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { IoSettings } from 'react-icons/io5';
 import { IoIosArrowRoundBack } from 'react-icons/io';
 import { useTheme } from 'next-themes';
-import { ThemeToggle } from './ThemeToggle';
+import { ThemeToggle } from '../settings/components/ThemeToggle';
 import * as fonts from '../../font/fonts'
 
 export default function Settings() {

@@ -16,7 +16,7 @@ import { DeepDiff } from "@/logics/DeepDiff";
 type SettingsContextType = {
 	settings: SettingsType;
 	// setSettings: Dispatch<SetStateAction<SettingsType>>;
-	updateSettings: (NewSettings: Partial<SettingsType>) => Promise<void>;
+	setSettings: (NewSettings: Partial<SettingsType>) => Promise<void>;
 };
 
 const SettingsContext = createContext<SettingsContextType | null>(null);
@@ -28,12 +28,12 @@ export function SettingsProvider({
 	initial: SettingsType;
 	children: React.ReactNode;
 }) {
-	const [settings, setSettings] = useState(initial);
+	const [settings, setSettingsState] = useState(initial);
 
-	async function updateSettings(NewSettings: Partial<SettingsType>) {
+	async function setSettings(NewSettings: Partial<SettingsType>) {
 		const merged = merge(settings, NewSettings);
 
-		setSettings(merged);
+		setSettingsState(merged);
 		console.log(merged);
 
 		const diffed = DeepDiff(DefaultSettings, merged);
@@ -48,7 +48,7 @@ export function SettingsProvider({
 	}
 
 	return (
-		<SettingsContext.Provider value={{ settings, updateSettings }}>
+		<SettingsContext.Provider value={{ settings, setSettings }}>
 			{children}
 		</SettingsContext.Provider>
 	);

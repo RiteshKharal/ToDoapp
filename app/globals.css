@@ -6,6 +6,7 @@
 	--color-background: hsl(var(--background));
 	--color-foreground: hsl(var(--foreground));
 
+	--color-card: hsl(var(--card));
 	--color-primary: hsl(var(--primary));
 	--color-primary-foreground: hsl(var(--primary-foreground));
 
@@ -17,55 +18,62 @@
 :root,
 .light {
 	--background: 0 0% 100%;
-	--foreground: 0 0% 5%;
+	--card: 0 0% 98%;
 
-	--border: 0 0% 75%;
+	--foreground: 0 0% 8%;
 
-	--primary: 0 0% 10%;
+	--border: 0 0% 88%;
+
+	--primary: 222 47% 11%;
 	--primary-foreground: 0 0% 100%;
 
-	--secondary: 0 0% 97%;
+	--secondary: 0 0% 95%;
 }
 
 /* DARK THEME */
 .dark {
-	--background: 0 0% 0%;
-	--foreground: 0 0% 96%;
+	--background: 220 15% 2%;
+	--card: 0 0% 9%;
 
-	--border: 0 0% 20%;
+	--foreground: 210 20% 96%;
 
-	--primary: 0 0% 95%;
-	--primary-foreground: 0 0% 5%;
+	--border: 220 12% 22%;
 
-	--secondary: 0 0% 3% / 0.9;
+	--primary: 210 40% 98%;
+	--primary-foreground: 220 15% 10%;
+
+	--secondary: 220 12% 16%;
 }
 
 /* BLUE THEME */
 .blue {
-	--background: 210 100% 15%;
-	--foreground: 210 100% 95%;
+	--background: 214 65% 15%;
+	--card: 214 60% 20%;
 
-	--border: 210 100% 30% / 0.5;
+	--foreground: 210 30% 96%;
 
-	--primary: 210 100% 50%;
-	--primary-foreground: 210 100% 95%;
+	--border: 214 40% 32%;
 
-	--secondary: 210 100% 20%;
+	--primary: 208 100% 62%;
+	--primary-foreground: 210 40% 98%;
+
+	--secondary: 214 42% 24%;
 }
 
 /* RED THEME */
 .red {
-	--background: 0 70% 15%;
-	--foreground: 0 0% 96%;
+	--background: 355 45% 15%;
+	--card: 355 40% 20%;
 
-	--border: 0 0% 20%;
+	--foreground: 0 0% 97%;
 
-	--primary: 0 80% 50%;
-	--primary-foreground: 0 0% 95%;
+	--border: 355 28% 32%;
 
-	--secondary: 0 70% 20%;
+	--primary: 0 84% 62%;
+	--primary-foreground: 0 0% 100%;
+
+	--secondary: 355 32% 24%;
 }
-
 html {
 	scrollbar-width: thin;
 	scroll-behavior: smooth;
@@ -79,8 +87,6 @@ body {
 		background-color 0.3s ease,
 		color 0.3s ease;
 }
-
-
 
 input[type="date"]::-moz-calendar-picker-indicator {
 	color: hsl(var(--foreground));

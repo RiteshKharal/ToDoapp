@@ -2,11 +2,13 @@ import type { Metadata, Viewport } from "next";
 
 import "./globals.css";
 import { ThemeProviderWrapper } from "./providers/ThemeProvider";
-import { ThemeToggle } from "./(main)/components/ThemeToggle";
+import { ThemeToggle } from "./(main)/settings/components/ThemeToggle";
 import * as fonts from "./font/fonts";
 import "@/server/EmailVerefDel";
 import { GetSettings } from "@/server/settings/actions";
 import { SettingsProvider } from "./hooks/useSettings";
+import { IoSettings } from "react-icons/io5";
+import Accmanager from "./(main)/components/accmanager";
 
 const description =
 	"Customizable minimalist to-do app for focused task management and productivity with Next.js.";
@@ -133,14 +135,41 @@ export default async function RootLayout({
 	children: React.ReactNode;
 }>) {
 	const settings = await GetSettings({});
-	
+
 	return (
 		<html lang="en" suppressHydrationWarning>
 			<body
-				className={`top-10 antialiased ${fonts.geistMono.className} bg-background/50  font-sans text-foreground`}
+				className={`top-10 antialiased ${fonts.geistMono.className} bg-background/50  font-sans text-foreground w-full justify-center items-center flex col`}
 			>
 				<ThemeProviderWrapper>
-					<SettingsProvider initial={settings!}>{children}</SettingsProvider>
+					<SettingsProvider initial={settings!}>
+						<main
+							className={`w-full ${settings?.appearance.width === "medium" ? "max-w-3xl" : "max-w-6xl"}`}
+						>
+							<nav className="top-10 flex justify-between animate-[StretchIn_0.2s_ease-in] py-5">
+								<div className={`text-xl ${fonts.lilitaOne.className} `}>
+									Tudor
+								</div>
+
+								<div>
+									<div className="flex flex-row gap-5 text-center justify-center ">
+										<Accmanager cardtype="signup" />
+
+										<div>
+											<a href="/settings">
+												<IoSettings
+													cursor="pointer"
+													className=" text-xl hover:animate-[Rotate180_1s_infinite] "
+												/>
+											</a>
+										</div>
+									</div>
+								</div>
+							</nav>
+
+							{children}
+						</main>
+					</SettingsProvider>
 				</ThemeProviderWrapper>
 			</body>
 		</html>

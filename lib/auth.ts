@@ -1,18 +1,11 @@
 import { betterAuth } from "better-auth";
-import { PrismaClient } from "../app/generated/prisma/client";
+
 import { prismaAdapter } from "@better-auth/prisma-adapter";
-import { PrismaPg } from "@prisma/adapter-pg";
+
 import { dash } from "@better-auth/infra";
 import { sendEmail } from "@better-auth/infra";
 import { transporter } from "./mail";
-
-const adapter = new PrismaPg({
-	connectionString: process.env.DATABASE_URL!,
-});
-
-export const prisma = new PrismaClient({
-	adapter,
-});
+import { prisma } from "./prisma";
 
 // TODO: Use global prisma var
 

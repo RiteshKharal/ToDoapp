@@ -10,18 +10,16 @@ import { FaSun, FaMoon } from "react-icons/fa";
 export function ThemeToggle() {
 	const { resolvedTheme, setTheme } = useTheme();
 	const [mounted, setMounted] = useState(false);
-	const { settings, updateSettings } = useSettings();
+	const { settings, setSettings } = useSettings();
 
 	useEffect(() => {
 		if (!mounted) return;
 
-		console.log("startign");
-		updateSettings({
+		setSettings({
 			appearance: {
 				theme: resolvedTheme,
 			},
 		});
-		console.log("end");
 	}, [resolvedTheme]);
 
 	// eslint-disable-next-line react-hooks/set-state-in-effect

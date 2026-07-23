@@ -2,8 +2,6 @@
 
 import React from "react";
 import { redirect } from "next/navigation";
-import { prisma } from "../lib/auth";
-// import { useSession } from '../lib/auth-client';
 import { auth } from "../lib/auth";
 import { headers } from "next/headers";
 import {
@@ -12,6 +10,7 @@ import {
 	LocalToggleTaskRead,
 	LocalUserTasks,
 } from "./LocalTaskManager";
+import { prisma } from "@/lib/prisma";
 
 export default async function TaskManager(formdata: FormData) {
 	const session = await auth.api.getSession({
