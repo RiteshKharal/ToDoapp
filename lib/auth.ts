@@ -7,8 +7,6 @@ import { sendEmail } from "@better-auth/infra";
 import { transporter } from "./mail";
 import { prisma } from "./prisma";
 
-// TODO: Use global prisma var
-
 export const auth = betterAuth({
 	database: prismaAdapter(prisma, {
 		provider: "postgresql",

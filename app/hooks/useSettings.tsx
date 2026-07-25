@@ -12,11 +12,12 @@ import merge from "deepmerge";
 import { DefaultSettings } from "@/server/settings/default";
 import { UpdateSettings } from "@/server/settings/actions";
 import { DeepDiff } from "@/logics/DeepDiff";
+import { DeepPartial } from "@/logics/DeepPartial";
 
 type SettingsContextType = {
 	settings: SettingsType;
 	// setSettings: Dispatch<SetStateAction<SettingsType>>;
-	setSettings: (NewSettings: Partial<SettingsType>) => Promise<void>;
+	setSettings: (NewSettings: DeepPartial<SettingsType>) => Promise<void>;
 };
 
 const SettingsContext = createContext<SettingsContextType | null>(null);
@@ -30,18 +31,15 @@ export function SettingsProvider({
 }) {
 	const [settings, setSettingsState] = useState(initial);
 
-	async function setSettings(NewSettings: Partial<SettingsType>) {
-		const merged = merge(settings, NewSettings);
+	async function setSettings(NewSettings: DeepPartial<SettingsType>) {
+		const merged = merge(settings, NewSettings) as SettingsType;
 
 		setSettingsState(merged);
-		console.log(merged);
 
 		const diffed = DeepDiff(DefaultSettings, merged);
 
 		try {
-			console.log("calling");
-			await UpdateSettings({ settings: NewSettings });
-			console.log("ended call");
+			await UpdateSettings({ settings: diffed });
 		} catch (er) {
 			console.log("Could not update settings. ", er);
 		}

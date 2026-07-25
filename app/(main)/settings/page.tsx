@@ -8,7 +8,7 @@ import Accmanager from "@/app/(main)/components/accmanager";
 import { IoSettings } from "react-icons/io5";
 import { useRouter } from "next/navigation";
 import { useSettings } from "../../hooks/useSettings";
-import {  WidthOptions } from "./components/width";
+import { WidthOptions } from "./components/width";
 
 export default function Settings() {
 	const router = useRouter();
@@ -22,7 +22,7 @@ export default function Settings() {
 				<div className="w-full backdrop-blur-md rounded-2xl mt-8">
 					<button
 						className="flex items-center gap-2 mb-6 group transition-all mr-auto cursor-pointer "
-						onClick={() => router.back()}
+						onClick={() => router.push("/")}
 					>
 						<IoIosArrowRoundBack
 							size={22}
@@ -41,12 +41,11 @@ export default function Settings() {
 								<ThemeToggle />
 							</div>
 
-							{/* <div className="flex items-center justify-between p-4 rounded-xl">
+							<div className="flex items-center justify-between p-4 rounded-xl">
 								<span className="text-lg font-medium">Width</span>
 
 								<WidthOptions />
-							</div> */}
-							
+							</div>
 
 							{/* {[{ title: "Theme", component: ThemeToggle }].map((opt, i) => (
 								<div

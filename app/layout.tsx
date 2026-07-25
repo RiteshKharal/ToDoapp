@@ -9,6 +9,7 @@ import { GetSettings } from "@/server/settings/actions";
 import { SettingsProvider } from "./hooks/useSettings";
 import { IoSettings } from "react-icons/io5";
 import Accmanager from "./(main)/components/accmanager";
+import MainLayoutContainer from "./MainLayoutContainer";
 
 const description =
 	"Customizable minimalist to-do app for focused task management and productivity with Next.js.";
@@ -135,16 +136,17 @@ export default async function RootLayout({
 	children: React.ReactNode;
 }>) {
 	const settings = await GetSettings({});
+	console.log(settings);
 
 	return (
 		<html lang="en" suppressHydrationWarning>
 			<body
-				className={`top-10 antialiased ${fonts.geistMono.className} bg-background/50  font-sans text-foreground w-full justify-center items-center flex col`}
+				className={`top-10 antialiased ${fonts.geistMono.className} bg-background/50  font-sans text-foreground w-full justify-center items-center flex flex-col`}
 			>
 				<ThemeProviderWrapper>
 					<SettingsProvider initial={settings!}>
-						<main
-							className={`w-full ${settings?.appearance.width === "medium" ? "max-w-3xl" : "max-w-6xl"}`}
+						{/* <main
+							className={`w-full transition-[width] duration-200 ease-out ${settings?.appearance.width === "medium" ? "max-w-3xl" : "max-w-6xl"}`}
 						>
 							<nav className="top-10 flex justify-between animate-[StretchIn_0.2s_ease-in] py-5">
 								<div className={`text-xl ${fonts.lilitaOne.className} `}>
@@ -168,7 +170,8 @@ export default async function RootLayout({
 							</nav>
 
 							{children}
-						</main>
+						</main> */}
+						<MainLayoutContainer>{children}</MainLayoutContainer>
 					</SettingsProvider>
 				</ThemeProviderWrapper>
 			</body>

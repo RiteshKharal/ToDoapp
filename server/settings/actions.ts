@@ -37,7 +37,12 @@ export async function GetSettings({
 
 		// if (!user) return;
 
-		return merge(DefaultSettings, user?.settings ?? {});
+		const stings = merge(
+			DefaultSettings,
+			(user?.settings?.data as Object) ?? {},
+		);
+
+		return stings;
 	} catch (er) {
 		console.error("Error getting the user. ", er);
 	}
@@ -64,18 +69,16 @@ export async function UpdateSettings({
 		const merged = merge(DefaultSettings, settings);
 		const NewSettings = DeepDiff(DefaultSettings, merged);
 
-		console.log(NewSettings);
-
 		await prisma.settings.upsert({
 			where: {
 				userId: id,
 			},
 			create: {
 				userId: id,
-				data: NewSettings || {},
+				data: NewSettings,
 			},
 			update: {
-				data: NewSettings || {},
+				data: NewSettings,
 			},
 		});
 	} catch (er) {
