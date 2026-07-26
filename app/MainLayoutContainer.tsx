@@ -3,7 +3,7 @@
 import React, { ReactNode } from "react";
 import { useSettings } from "./hooks/useSettings";
 import * as fonts from "@/app/font/fonts";
-import Accmanager from "./(main)/components/accmanager";
+import Accmanager from "./(main)/components/AccManager";
 import { IoSettings } from "react-icons/io5";
 
 export default function MainLayoutContainer({

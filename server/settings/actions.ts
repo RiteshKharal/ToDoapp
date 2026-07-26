@@ -7,6 +7,7 @@ import { DefaultSettings } from "./default";
 import { headers } from "next/headers";
 import { DeepDiff } from "@/logics/DeepDiff";
 import { prisma } from "@/lib/prisma";
+import { DeepPartial } from "@/logics/DeepPartial";
 
 export async function GetSettings({
 	userId,
@@ -53,7 +54,7 @@ export async function UpdateSettings({
 	settings,
 }: {
 	userId?: string;
-	settings: Partial<SettingsType>;
+	settings: DeepPartial<SettingsType>;
 }) {
 	let id = userId;
 
@@ -66,8 +67,10 @@ export async function UpdateSettings({
 	if (!id) return;
 
 	try {
-		const merged = merge(DefaultSettings, settings);
-		const NewSettings = DeepDiff(DefaultSettings, merged);
+		const merged = (merge(DefaultSettings, settings) as SettingsType) ?? {};
+
+		const NewSettings = DeepDiff(DefaultSettings, merged) ?? {};
+
 
 		await prisma.settings.upsert({
 			where: {

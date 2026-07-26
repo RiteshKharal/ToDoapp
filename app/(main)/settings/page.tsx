@@ -4,7 +4,7 @@ import React, { useEffect } from "react";
 import * as fonts from "@/app/font/fonts";
 import { IoIosArrowRoundBack } from "react-icons/io";
 import { ThemeToggle } from "./components/ThemeToggle";
-import Accmanager from "@/app/(main)/components/accmanager";
+import Accmanager from "@/app/(main)/components/AccManager";
 import { IoSettings } from "react-icons/io5";
 import { useRouter } from "next/navigation";
 import { useSettings } from "../../hooks/useSettings";

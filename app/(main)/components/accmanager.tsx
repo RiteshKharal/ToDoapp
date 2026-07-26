@@ -4,24 +4,13 @@ import * as fonts from "@/app/font/fonts";
 import { MdAccountCircle } from "react-icons/md";
 import { redirect, useRouter } from "next/navigation";
 import { signIn, signUp, useSession } from "../../../lib/auth-client";
-import { Loader, X, Check } from "lucide-react";
+import { Loader, X, Check, Form } from "lucide-react";
 import { EmailVerefCard } from "./EmailVerefCard";
+import { ValidateFormData } from "@/logics/validator";
 
 type AccManagerProps = {
 	cardtype: string;
 };
-
-type UserType = {
-	id: string;
-	email: string;
-	name: string;
-	password: string;
-};
-
-interface FormErrorTypes {
-	action: String | null;
-	message: String | null;
-}
 
 type AuthError = {
 	code?: string;
@@ -33,45 +22,24 @@ type AuthError = {
 export default function Accmanager({ cardtype }: AccManagerProps) {
 	const router = useRouter();
 	const { data: user, isPending } = useSession();
-	const [lstype, setLstype] = useState<string | null>(null);
-	const [out, setOut] = useState<ReactElement | null>(null);
-	const [FormError, setFormError] = useState<null | AuthError | string>();
+	const [AuthMode, setAuthMode] = useState<"signup" | "login" | null>(null);
+	const [FormError, setFormError] = useState<null | string>();
 	const [loading, setLoading] = useState<boolean>(false);
 	const [EmailVeref, setEmailVeref] = useState<string | null>(null);
 
-	function ValidateData(formdata: FormData, exclude: string | null = null) {
-		const EmailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-		const nameRegex = /^[a-zA-Z\s'-]{2,50}$/;
-		const email = EmailRegex.test(String(formdata.get("email")))
-			? formdata.get("email")
-			: null;
-		const name = nameRegex.test(String(formdata.get("name")))
-			? formdata.get("name")
-			: null;
-		const pass = formdata.get("password");
-
-		if (!email && exclude !== "email") {
-			setFormError("Invalid Email.");
-		} else if (!name && exclude !== "name") {
-			setFormError("Invalid Name.");
-		} else if (!pass && exclude !== "password") {
-			setFormError("Invalid Password.");
-		} else {
-			return formdata;
-		}
-
-		return null;
-	}
-
 	async function HandleSignSubmit(event: React.FormEvent<HTMLFormElement>) {
 		event.preventDefault();
+		setLoading(false);
+		setFormError(null);
 		const formdata = new FormData(event.currentTarget);
-		const ValidatedData = ValidateData(formdata);
+		const ValidatedData = ValidateFormData(formdata, (msg) => {
+			setFormError(msg);
+		});
 		setLoading(true);
 
 		if (
-			!ValidatedData?.get("name") &&
-			!ValidatedData?.get("password") &&
+			!ValidatedData?.get("name") ||
+			!ValidatedData?.get("password") ||
 			!ValidatedData?.get("email")
 		) {
 			FormError ?? setFormError("Missing valid Info");
@@ -90,14 +58,13 @@ export default function Accmanager({ cardtype }: AccManagerProps) {
 		});
 
 		if (error) {
-			setFormError(error || "Something went wrong!");
+			setFormError(error.message || "Something went wrong!");
 			setLoading(false);
-			return
+			return;
 		}
 
-
 		if (data) {
-			setLstype(null);
+			setAuthMode(null);
 			setFormError(null);
 			setLoading(false);
 			setEmailVeref(email);
@@ -110,9 +77,15 @@ export default function Accmanager({ cardtype }: AccManagerProps) {
 		setFormError(null);
 		event.preventDefault();
 		const formdata = new FormData(event.currentTarget);
-		const ValidatedData = ValidateData(formdata, "name");
+		const ValidatedData = ValidateFormData(
+			formdata,
+			(msg) => {
+				setFormError(msg);
+			},
+			true,
+		);
 
-		if (!ValidatedData?.get("password") && !ValidatedData?.get("email")) {
+		if (!ValidatedData?.get("password") || !ValidatedData?.get("email")) {
 			setFormError("Missing valid Info");
 			setLoading(false);
 			return;
@@ -126,11 +99,11 @@ export default function Accmanager({ cardtype }: AccManagerProps) {
 			password: password,
 		});
 
-		if (error) setFormError(error || "Something went wrong!");
+		if (error) setFormError(error.message || "Something went wrong!");
 		setLoading(false);
 
 		if (data) {
-			setLstype(null);
+			setAuthMode(null);
 			setLoading(false);
 			setFormError(null);
 			router.push("/");
@@ -175,7 +148,7 @@ export default function Accmanager({ cardtype }: AccManagerProps) {
 							<span
 								className={`font-medium leading-relaxed text-sm ml-2 mt-4 italic text-start block ${fonts.workSans.className} transition-transform animate-[FlowIn_0.4s_ease_forwards]`}
 							>
-								{typeof FormError === "string" ? FormError : FormError?.message}
+								{FormError}
 							</span>
 						</div>
 					</div>
@@ -197,7 +170,7 @@ export default function Accmanager({ cardtype }: AccManagerProps) {
 				<small className="mt-5 ">
 					<button
 						onClick={() => {
-							setLstype("signup");
+							setAuthMode("signup");
 							setFormError(null);
 						}}
 						className="cursor-pointer"
@@ -253,7 +226,7 @@ export default function Accmanager({ cardtype }: AccManagerProps) {
 							<span
 								className={`font-medium leading-relaxed text-sm ml-2 mt-1 italic text-start block ${fonts.workSans.className} animate-[FlowIn_0.4s_ease_forwards]`}
 							>
-								{typeof FormError === "string" ? FormError : FormError?.message}
+								{FormError}
 							</span>
 						</div>
 					</div>
@@ -274,7 +247,7 @@ export default function Accmanager({ cardtype }: AccManagerProps) {
 				<small>
 					<button
 						onClick={() => {
-							setLstype("login");
+							setAuthMode("login");
 							setFormError(null);
 						}}
 						className="mt-5 cursor-pointer"
@@ -286,11 +259,11 @@ export default function Accmanager({ cardtype }: AccManagerProps) {
 		);
 	}
 
-	function options() {
-		user
-			? setOut(
-					<div
-						className={`
+	return (
+		<>
+			{!isPending && user ? (
+				<div
+					className={`
                 flex items-center gap-2
                 rounded-2xl
                 backdrop-blur-md
@@ -298,15 +271,14 @@ export default function Accmanager({ cardtype }: AccManagerProps) {
                 cursor-pointer
                 ${fonts.comfortaa.className}
               `}
-					>
-						<MdAccountCircle className="text-2xl text-primary" />
-						<span className="text-[1rem] font-medium">{user.user.name}</span>
-					</div>,
-				)
-			: setOut(
-					<div
-						onClick={() => setLstype("signup")}
-						className={`
+				>
+					<MdAccountCircle className="text-2xl text-primary" />
+					<span className="text-[1rem] font-medium">{user.user.name}</span>
+				</div>
+			) : (
+				<div
+					onClick={() => setAuthMode("signup")}
+					className={`
                 rounded-2xl
                 text-primary
                 text-sm font-semibold
@@ -316,27 +288,19 @@ export default function Accmanager({ cardtype }: AccManagerProps) {
                 cursor-pointer
                 ${fonts.cabin.className}
               `}
-					>
-						Sign Up
-					</div>,
-				);
-	}
+				>
+					Sign Up
+				</div>
+			)}
 
-
-	useEffect(options, [user]);
-
-	return (
-		<>
-			{out}
-
-			{lstype && (
+			{AuthMode && (
 				<div className="fixed inset-0 z-50 flex justify-center items-center backdrop-blur-sm">
-					{lstype && lstype === "login" && (
-						<Login close={() => setLstype(null)} />
+					{AuthMode && AuthMode === "login" && (
+						<Login close={() => setAuthMode(null)} />
 					)}
 
-					{lstype && lstype === "signup" && (
-						<Signup close={() => setLstype(null)} />
+					{AuthMode && AuthMode === "signup" && (
+						<Signup close={() => setAuthMode(null)} />
 					)}
 				</div>
 			)}

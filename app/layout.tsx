@@ -8,7 +8,7 @@ import "@/server/EmailVerefDel";
 import { GetSettings } from "@/server/settings/actions";
 import { SettingsProvider } from "./hooks/useSettings";
 import { IoSettings } from "react-icons/io5";
-import Accmanager from "./(main)/components/accmanager";
+import Accmanager from "./(main)/components/AccManager";
 import MainLayoutContainer from "./MainLayoutContainer";
 
 const description =
