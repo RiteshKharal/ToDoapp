@@ -3,12 +3,13 @@
 import React, { useEffect } from "react";
 import * as fonts from "@/app/font/fonts";
 import { IoIosArrowRoundBack } from "react-icons/io";
-import { ThemeToggle } from "./components/ThemeToggle";
+import { ThemeToggle } from "./main/ThemeToggle";
 import Accmanager from "@/app/(main)/components/AccManager";
 import { IoSettings } from "react-icons/io5";
 import { useRouter } from "next/navigation";
 import { useSettings } from "../../hooks/useSettings";
-import { WidthOptions } from "./components/width";
+import { WidthOptions } from "./main/width";
+import { PomodoroSize } from "./main/PomodoroSize";
 
 export default function Settings() {
 	const router = useRouter();
@@ -45,6 +46,12 @@ export default function Settings() {
 								<span className="text-lg font-medium">Width</span>
 
 								<WidthOptions />
+							</div>
+
+							<div className="flex items-center justify-between p-4 rounded-xl">
+								<span className="text-lg font-medium">Pomodoro Size</span>
+
+								<PomodoroSize />
 							</div>
 
 							{/* {[{ title: "Theme", component: ThemeToggle }].map((opt, i) => (

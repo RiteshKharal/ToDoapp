@@ -224,7 +224,7 @@ export function Task() {
 	return (
 		<>
 			<section
-				className={`w-full mt-5 transition-[grid-template-rows] duration-400 ease-out min-h-0 grid ${FormHidden ? "grid-rows-[0fr]" : "grid-rows-[1fr]"}`}
+				className={`w-full mt-15 transition-[grid-template-rows] duration-400 ease-in-out min-h-0 grid ${FormHidden ? "grid-rows-[0fr]" : "grid-rows-[1fr]"}`}
 			>
 				<div className="min-h-0 overflow-hidden">
 					<form
@@ -302,7 +302,7 @@ export function Task() {
 						}}
 					>
 						<span className="text-[13px] font-medium hover:underline hover:underline-offset-3">
-							Show
+							Add
 						</span>
 					</button>
 				</h1>

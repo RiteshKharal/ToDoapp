@@ -39,10 +39,7 @@ export function SettingsProvider({
 		// const diffed = DeepDiff(DefaultSettings, merged) as DeepPartial;
 
 		try {
-			console.log("updating with: ", NewSettings);
 			await UpdateSettings({ settings: NewSettings });
-
-			console.log("updationg ended");
 		} catch (er) {
 			console.log("Could not update settings. ", er);
 		}

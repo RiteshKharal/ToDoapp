@@ -2,8 +2,9 @@
 
 import { useSettings } from "@/app/hooks/useSettings";
 import React, { useEffect } from "react";
+import SettingsButton from "../components/SettingsButton";
 
-export function WidthOptions() {
+export function PomodoroSize() {
 	const { settings, setSettings } = useSettings();
 
 	const options: { title: string; onClick: () => void }[] = [
@@ -13,7 +14,7 @@ export function WidthOptions() {
 			onClick: () => {
 				setSettings({
 					appearance: {
-						width: "medium",
+						PomodoroSize: "medium",
 					},
 				});
 			},
@@ -23,7 +24,7 @@ export function WidthOptions() {
 			onClick: () => {
 				setSettings({
 					appearance: {
-						width: "max",
+						PomodoroSize: "max",
 					},
 				});
 			},
@@ -33,13 +34,15 @@ export function WidthOptions() {
 	return (
 		<div className="flex flex-wrap gap-5">
 			{options.map((option, i) => (
-				<button
+				<SettingsButton
 					key={i}
-					onClick={option.onClick}
-					className={`min-w-20 rounded-lg bg-card/75 px-4 py-2.5 text-sm font-medium text-foreground transition-colors hover:bg-card/96 active:bg-card/90 ho cursor-pointer shadow-[0_0_12px] hover:shadow-[0_0_15px] border hover:border-border ${settings.appearance.width === option.title.toLowerCase() ? "border-2 border-border/86 shadow-primary/25" : "border border-border/70 shadow-card"}`}
+					onClick={() => {
+						option.onClick();
+					}}
+					AddedClasses={`${settings.appearance.PomodoroSize === option.title.toLowerCase() ? "border-2 border-border/86 shadow-primary/25" : "border border-border/70 shadow-card"}`}
 				>
 					{option.title}
-				</button>
+				</SettingsButton>
 			))}
 		</div>
 	);

@@ -2,7 +2,7 @@ import type { Metadata, Viewport } from "next";
 
 import "./globals.css";
 import { ThemeProviderWrapper } from "./providers/ThemeProvider";
-import { ThemeToggle } from "./(main)/settings/components/ThemeToggle";
+import { ThemeToggle } from "./(main)/settings/main/ThemeToggle";
 import * as fonts from "./font/fonts";
 import "@/server/EmailVerefDel";
 import { GetSettings } from "@/server/settings/actions";
