@@ -80,7 +80,7 @@ export function Pomodoro() {
 					<div className="absolute left-1/2 -translate-x-1/2">
 						<button
 							onClick={() => setRunning((v) => !v)}
-							className="bg-primary text-primary-foreground flex items-center gap-2 rounded-lg px-5 py-2"
+							className="bg-primary text-primary-foreground flex items-center gap-2 rounded-lg px-5 py-2  cursor-pointer"
 						>
 							{running ? <Pause size={18} /> : <Play size={18} />}
 							{running ? "Pause" : "Start"}

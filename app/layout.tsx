@@ -11,6 +11,8 @@ import { IoSettings } from "react-icons/io5";
 import Accmanager from "./(main)/components/AccManager";
 import MainLayoutContainer from "./MainLayoutContainer";
 
+export const dynamic = "force-dynamic";
+
 const description =
 	"Customizable minimalist to-do app for focused task management and productivity with Next.js.";
 
