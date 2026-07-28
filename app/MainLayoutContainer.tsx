@@ -12,6 +12,7 @@ export default function MainLayoutContainer({
 	children: ReactNode;
 }) {
 	const { settings, setSettings } = useSettings();
+	
 	return (
 		<main
 			className={`w-full transition-all duration-300 ease-out ${settings?.appearance.width === "medium" ? "max-w-3xl" : "max-w-6xl"}`}

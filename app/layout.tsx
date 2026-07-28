@@ -138,7 +138,6 @@ export default async function RootLayout({
 	children: React.ReactNode;
 }>) {
 	const settings = await GetSettings({});
-	console.log(settings);
 
 	return (
 		<html lang="en" suppressHydrationWarning>

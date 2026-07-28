@@ -10,6 +10,7 @@ import { useRouter } from "next/navigation";
 import { useSettings } from "../../hooks/useSettings";
 import { WidthOptions } from "./main/width";
 import { PomodoroSize } from "./main/PomodoroSize";
+import { Description } from "./main/description";
 
 export default function Settings() {
 	const router = useRouter();
@@ -52,6 +53,14 @@ export default function Settings() {
 								<span className="text-lg font-medium">Pomodoro Size</span>
 
 								<PomodoroSize />
+							</div>
+
+							<div className="flex items-center justify-between p-4 rounded-xl">
+								<span className="text-lg font-medium">
+									Hide Task description
+								</span>
+
+								<Description />
 							</div>
 
 							{/* {[{ title: "Theme", component: ThemeToggle }].map((opt, i) => (

@@ -16,6 +16,7 @@ import {
 	LocalToggleTaskRead,
 	LocalUserTasks,
 } from "../../../server/LocalTaskManager";
+import { useSettings } from "@/app/hooks/useSettings";
 
 export function TaskCard({
 	id,
@@ -143,6 +144,7 @@ export function Task() {
 	const user = session?.data?.user;
 	const [tasks, setTasks] = useState<TasksType[] | null>(null);
 	const [FormHidden, setFormHidden] = useState(false);
+	const { settings, setSettings } = useSettings();
 
 	useEffect(() => {
 		UpdateTasks();
@@ -169,10 +171,7 @@ export function Task() {
 					TaskDueTime: val.date,
 				}).forEach(([k, v]) => formData.append(k, String(v)));
 
-				console.log("form", Object.fromEntries(formData));
-
 				const result = await TaskManager(formData);
-				console.log("res", result);
 
 				if (result?.toLowerCase() === "success") {
 					LocalTasks[i].draft = false;
@@ -254,12 +253,14 @@ export function Task() {
 							required
 						/>
 
-						<textarea
-							name="TaskDesc"
-							placeholder="Task Description"
-							className="p-2 resize-none border border-border rounded-sm"
-							rows={4}
-						/>
+						{!settings.appearance.HideDescription && (
+							<textarea
+								name="TaskDesc"
+								placeholder="Task Description"
+								className="p-2 resize-none border border-border rounded-sm"
+								rows={4}
+							/>
+						)}
 
 						<div className="w-full flex justify-between items-center">
 							<input
