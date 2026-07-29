@@ -17,119 +17,7 @@ import {
 	LocalUserTasks,
 } from "../../../server/LocalTaskManager";
 import { useSettings } from "@/app/hooks/useSettings";
-
-export function TaskCard({
-	id,
-	title,
-	desc,
-	date,
-	read,
-	readToggle,
-	HandleDelete,
-}: {
-	id: number;
-	title: string;
-	desc: string;
-	date: string;
-	read: boolean;
-	readToggle: () => void;
-	HandleDelete: () => void;
-}) {
-	const [checked, setChecked] = useState(read ?? false);
-	const completed = checked;
-	const hasDesc = Boolean(desc);
-
-	useEffect(() => {
-		setChecked(read ?? false);
-	}, [read]);
-
-	return (
-		<button
-			type="button"
-			onClick={() => {
-				readToggle();
-			}}
-			aria-pressed={checked}
-			// title="Mark as Done"
-			className={`
-					w-full rounded-2xl
-					min-h-20
-					transition-all duration-300 ease-out
-					border
-					active:scale-102
-					focus:outline-none cursor-pointer
-					${
-						completed
-							? "bg-primary/15 border-primary/10"
-							: "bg-foreground/5 border-foreground/7 hover:bg-foreground/10"
-					}
-					text-center
-					`}
-		>
-			<div
-				className={`relative flex flex-col  px-5 py-5
-        ${hasDesc ? "gap-3" : "items-center gap-2"}`}
-			>
-				<h3
-					className={`
-						font-semibold tracking-tight
-						transition-all duration-300
-						${completed ? "line-through text-foreground/40" : "text-foreground"}
-						${hasDesc ? "text-lg" : "text-2xl"}
-						${fonts.quicksand.className}
-					`}
-				>
-					{title}
-				</h3>
-
-				{hasDesc && (
-					<p
-						className={`
-							text-sm leading-relaxed
-							${completed ? "line-through text-foreground/30" : "text-foreground/70"}
-							`}
-					>
-						{desc}
-					</p>
-				)}
-
-				<div
-					className={`
-						absolute bottom-10 right-4
-						bg-primary/10 text-primary
-						px-3 py-1
-						rounded-full
-						text-xs font-semibold
-						${completed ? "text-primary/50 bg-primary/20" : ""}
-					`}
-					title={date}
-				>
-					{date}
-				</div>
-
-				<div className="absolute top-6 left-4 cursor-pointer">
-					<div
-						className=""
-						onClick={(e) => {
-							e.preventDefault();
-							e.stopPropagation();
-						}}
-					>
-						<NavigationDropDown
-							TaskId={id}
-							OnRead={() => {
-								readToggle();
-							}}
-							OnDelete={() => {
-								HandleDelete();
-							}}
-						/>
-					</div>
-				</div>
-			</div>
-		</button>
-	);
-}
+import { TaskCard } from "../components/TaskCard";
 
 type TasksType = {
 	id: number;
@@ -315,7 +203,7 @@ export function Task() {
 								key={i}
 								id={task.id}
 								title={task.title}
-								desc={task.description || ""}
+								desc={task.description}
 								date={task.date}
 								read={task.read}
 								readToggle={() => handleReadToggle(task.id)}
