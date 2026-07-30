@@ -23,6 +23,7 @@ export function Pomodoro() {
 	const [time, setTime] = useState(mode.length);
 	const [running, setRunning] = useState(false);
 	const { settings, setSettings } = useSettings();
+	const AudioRef = useRef<HTMLAudioElement>(null);
 
 	const interval = useRef<number | null>(null);
 
@@ -32,8 +33,18 @@ export function Pomodoro() {
 	}, [mode]);
 
 	useEffect(() => {
-		if (!running) return;
+		if (!AudioRef.current) return;
+		AudioRef.current.volume = 1;
 
+		if (running) {
+			AudioRef.current.play();
+		} else {
+			AudioRef.current.pause();
+		}
+	}, [running]);
+
+	useEffect(() => {
+		if (!running) return;
 		interval.current = window.setInterval(() => {
 			setTime((t) => {
 				if (t <= 1) {
@@ -55,6 +66,9 @@ export function Pomodoro() {
 		<div
 			className={`flex justify-center transition-all duration-200 ease-out ${settings.appearance.PomodoroSize === "max" && "scale-130"} scale-115 p-5 mt-10`}
 		>
+			{settings.appearance.PomodoroAudio && (
+				<audio src={"/BrownNoise.mp3"} loop ref={AudioRef} />
+			)}
 			<div className="bg-card w-full max-w-md rounded-xl p-5 flex flex-col gap-5">
 				<div className="mb-5 flex justify-center gap-2">
 					{MODES.map((m) => (

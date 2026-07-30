@@ -5,6 +5,7 @@ import { useSettings } from "./hooks/useSettings";
 import * as fonts from "@/app/font/fonts";
 import Accmanager from "@/app/(main)/components/AccManager";
 import { IoSettings } from "react-icons/io5";
+import { useRouter } from "next/navigation";
 
 export default function MainLayoutContainer({
 	children,
@@ -12,7 +13,8 @@ export default function MainLayoutContainer({
 	children: ReactNode;
 }) {
 	const { settings, setSettings } = useSettings();
-	
+	const router = useRouter();
+
 	return (
 		<main
 			className={`w-full transition-all duration-300 ease-out ${settings?.appearance.width === "medium" ? "max-w-3xl" : "max-w-6xl"}`}
@@ -25,12 +27,16 @@ export default function MainLayoutContainer({
 						<Accmanager cardtype="signup" />
 
 						<div>
-							<a href="/settings">
+							<button
+								onClick={() => {
+									router.push("/settings");
+								}}
+							>
 								<IoSettings
 									cursor="pointer"
 									className=" text-xl hover:animate-[Rotate180_1s_infinite] "
 								/>
-							</a>
+							</button>
 						</div>
 					</div>
 				</div>

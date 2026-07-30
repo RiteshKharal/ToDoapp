@@ -11,6 +11,7 @@ import { useSettings } from "../../hooks/useSettings";
 import { WidthOptions } from "./main/width";
 import { PomodoroSize } from "./main/PomodoroSize";
 import { Description } from "./main/description";
+import { AudioSetting } from "./main/audio";
 
 export default function Settings() {
 	const router = useRouter();
@@ -61,6 +62,12 @@ export default function Settings() {
 								</span>
 
 								<Description />
+							</div>
+
+							<div className="flex items-center justify-between p-4 rounded-xl">
+								<span className="text-lg font-medium">Pomodoro Audio</span>
+
+								<AudioSetting />
 							</div>
 
 							{/* {[{ title: "Theme", component: ThemeToggle }].map((opt, i) => (
