@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { ReactNode, useEffect } from "react";
 import * as fonts from "@/app/font/fonts";
 import { IoIosArrowRoundBack } from "react-icons/io";
 import { ThemeToggle } from "./main/ThemeToggle";
@@ -16,6 +16,47 @@ import { AudioSetting } from "./main/audio";
 export default function Settings() {
 	const router = useRouter();
 	const { settings, setSettings } = useSettings();
+
+	const options: {
+		SectionTitle: string;
+		SectionSettings: { title: string; component: ReactNode }[];
+	}[] = [
+		{
+			SectionTitle: "Appearance",
+			SectionSettings: [
+				{
+					title: "Theme",
+					component: <ThemeToggle />,
+				},
+				{
+					title: "Width",
+					component: <WidthOptions />,
+				},
+			],
+		},
+		{
+			SectionTitle: "Pomodoro",
+			SectionSettings: [
+				{
+					title: "Pomodoro size",
+					component: <PomodoroSize />,
+				},
+				{
+					title: "Pomodoro Audio",
+					component: <AudioSetting />,
+				},
+			],
+		},
+		{
+			SectionTitle: "Task",
+			SectionSettings: [
+				{
+					title: "Hide Task description",
+					component: <Description />,
+				},
+			],
+		},
+	];
 
 	return (
 		<div
@@ -34,10 +75,10 @@ export default function Settings() {
 						Back
 					</button>
 
-					<div className="flex flex-col gap-6 mt-10">
+					{/* <div className="flex flex-col gap-6 mt-10">
 						<div className="text-2xl">Appearance</div>
 
-						<div className="flex flex-col gap-6 ml-5">
+						<div >
 							<div className="flex items-center justify-between p-4 rounded-xl">
 								<span className="text-lg font-medium">Theme</span>
 
@@ -70,20 +111,30 @@ export default function Settings() {
 								<AudioSetting />
 							</div>
 
-							{/* {[{ title: "Theme", component: ThemeToggle }].map((opt, i) => (
-								<div
-									className="flex items-center justify-evenly p-4 rounded-xl "
-									key={i}
-								>
-									<span className="text-lg font-medium">{opt.title}</span>
-
-									<opt.component />
-								</div>
-							))} */}
+							
 						</div>
-					</div>
+					</div> */}
+
+					{options.map((opt, i) => (
+						<div className="flex flex-col gap-6 mt-10" key={i}>
+							<div className="text-2xl">{opt.SectionTitle}</div>
+
+							<div className="flex flex-col gap-6 ml-5">
+								{opt.SectionSettings.map((s, j) => (
+									<div className="flex items-center justify-between p-4 rounded-xl">
+										<span className="text-lg font-medium">{s.title}</span>
+
+										{s.component}
+									</div>
+								))}
+							</div>
+						</div>
+					))}
 				</div>
 			</div>
 		</div>
 	);
+}
+{
+	/*  */
 }
