@@ -10,11 +10,14 @@
 	--color-primary: hsl(var(--primary));
 	--color-primary-foreground: hsl(var(--primary-foreground));
 
+	--color-muted: hsl(var(--muted));
+	--color-muted-foreground: hsl(var(--muted-foreground));
+
 	--color-secondary: hsl(var(--secondary));
 	--color-border: hsl(var(--border));
 }
 
-/* WHITE THEME */
+/* LIGHT TME */
 :root,
 .light {
 	--background: 0 0% 100%;
@@ -28,9 +31,12 @@
 	--primary-foreground: 0 0% 100%;
 
 	--secondary: 0 0% 95%;
+
+	--muted: 0 0% 96%;
+	--muted-foreground: 0 0% 45%;
 }
 
-/* DARK THEME */
+/* DARK TME */
 .dark {
 	--background: 220 15% 2%;
 	--card: 0 0% 9%;
@@ -43,9 +49,12 @@
 	--primary-foreground: 220 15% 10%;
 
 	--secondary: 220 12% 16%;
+
+	--muted: 220 10% 12%;
+	--muted-foreground: 220 10% 65%;
 }
 
-/* BLUE THEME */
+/* BLUE TME */
 .blue {
 	--background: 214 65% 15%;
 	--card: 214 60% 20%;
@@ -58,9 +67,12 @@
 	--primary-foreground: 210 40% 98%;
 
 	--secondary: 214 42% 24%;
+
+	--muted: 214 38% 22%;
+	--muted-foreground: 210 18% 74%;
 }
 
-/* RED THEME */
+/* RED TME */
 .red {
 	--background: 355 45% 15%;
 	--card: 355 40% 20%;
@@ -73,7 +85,11 @@
 	--primary-foreground: 0 0% 100%;
 
 	--secondary: 355 32% 24%;
+
+	--muted: 355 28% 22%;
+	--muted-foreground: 0 0% 74%;
 }
+
 html {
 	scrollbar-width: thin;
 	scroll-behavior: smooth;

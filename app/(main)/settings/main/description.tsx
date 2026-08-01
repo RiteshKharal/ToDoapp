@@ -8,7 +8,6 @@ export function Description() {
 	const { settings, setSettings } = useSettings();
 
 	const options: { title: string; onClick: () => void }[] = [
-		// { title: "Small", onClick: () => {} },
 		{
 			title: "on",
 			onClick: () => {

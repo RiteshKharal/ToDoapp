@@ -75,54 +75,21 @@ export default function Settings() {
 						Back
 					</button>
 
-					{/* <div className="flex flex-col gap-6 mt-10">
-						<div className="text-2xl">Appearance</div>
-
-						<div >
-							<div className="flex items-center justify-between p-4 rounded-xl">
-								<span className="text-lg font-medium">Theme</span>
-
-								<ThemeToggle />
-							</div>
-
-							<div className="flex items-center justify-between p-4 rounded-xl">
-								<span className="text-lg font-medium">Width</span>
-
-								<WidthOptions />
-							</div>
-
-							<div className="flex items-center justify-between p-4 rounded-xl">
-								<span className="text-lg font-medium">Pomodoro Size</span>
-
-								<PomodoroSize />
-							</div>
-
-							<div className="flex items-center justify-between p-4 rounded-xl">
-								<span className="text-lg font-medium">
-									Hide Task description
-								</span>
-
-								<Description />
-							</div>
-
-							<div className="flex items-center justify-between p-4 rounded-xl">
-								<span className="text-lg font-medium">Pomodoro Audio</span>
-
-								<AudioSetting />
-							</div>
-
-							
-						</div>
-					</div> */}
-
 					{options.map((opt, i) => (
-						<div className="flex flex-col gap-6 mt-10" key={i}>
-							<div className="text-2xl">{opt.SectionTitle}</div>
+						<div className="mt-10" key={i}>
+							<h2 className="text-xl font-semibold tracking-tight mb-4">
+								{opt.SectionTitle}
+							</h2>
 
-							<div className="flex flex-col gap-6 ml-5">
+							<div className="flex flex-col gap-3 ml-2">
 								{opt.SectionSettings.map((s, j) => (
-									<div className="flex items-center justify-between p-4 rounded-xl">
-										<span className="text-lg font-medium">{s.title}</span>
+									<div
+										className="flex items-center justify-between py-3"
+										key={j}
+									>
+										<span className="text-base font-medium text-foreground">
+											{s.title}
+										</span>
 
 										{s.component}
 									</div>
@@ -134,7 +101,4 @@ export default function Settings() {
 			</div>
 		</div>
 	);
-}
-{
-	/*  */
 }

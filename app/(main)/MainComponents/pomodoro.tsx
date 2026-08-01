@@ -1,16 +1,16 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
-import { Pause, Play, RotateCcw } from "lucide-react";
+import { ChevronDown, ChevronUp, Pause, Play, RotateCcw } from "lucide-react";
 import { useSettings } from "@/app/hooks/useSettings";
 
-const MODES = [
+const InitialMODES = [
 	{ key: "pomodoro", label: "Pomodoro", length: 30 * 60 },
 	{ key: "short", label: "Short Break", length: 5 * 60 },
 	{ key: "long", label: "Long Break", length: 15 * 60 },
 ];
 
-type Mode = (typeof MODES)[number];
+type ModeType = (typeof InitialMODES)[number];
 
 function formatTime(seconds: number) {
 	const m = Math.floor(seconds / 60);
@@ -19,7 +19,11 @@ function formatTime(seconds: number) {
 }
 
 export function Pomodoro() {
-	const [mode, setMode] = useState<Mode>(MODES[0]);
+	const [MODES, setMODES] = useState(InitialMODES);
+	const [CurrentMode, setCurrrentMode] = useState(0);
+	const mode: ModeType = MODES[CurrentMode];
+
+	// const [mode, setMode] = useState<Mode>(MODES[0]);
 	const [time, setTime] = useState(mode.length);
 	const [running, setRunning] = useState(false);
 	const { settings, setSettings } = useSettings();
@@ -71,10 +75,10 @@ export function Pomodoro() {
 			)}
 			<div className="bg-card w-full max-w-md rounded-xl p-5 flex flex-col gap-5">
 				<div className="mb-5 flex justify-center gap-2">
-					{MODES.map((m) => (
+					{MODES.map((m, i) => (
 						<button
 							key={m.key}
-							onClick={() => setMode(m)}
+							onClick={() => setCurrrentMode(i)}
 							className={`rounded-md px-3 py-1.5 text-sm transition ${
 								mode.key === m.key
 									? "bg-primary text-primary-foreground"
@@ -86,8 +90,59 @@ export function Pomodoro() {
 					))}
 				</div>
 
-				<div className="mb-6 text-center text-6xl font-semibold">
+				<div
+					className={`mb-6 text-center text-6xl font-semibold relative flex flex-col transition-all duration-1000 ease-in-out`}
+				>
+					<section
+						className={`h-max text-center justify-between absolute space-y-4 flex flex-col ${running && "hidden"}`}
+					>
+						<button
+							className={`text-primary/75 hover:text-primary cursor-pointer `}
+							onClick={() => {
+								setTime((p) => (p += 1 * 60));
+							}}
+						>
+							<ChevronUp />
+						</button>
+
+						<button
+							className={`${time - 1 * 60 <= 0 ? "text-muted-foreground/20" : "text-primary/80 hover:text-primary cursor-pointer"}`}
+							onClick={() => {
+								if (time - 1 * 60 <= 0) return;
+								setTime((p) => (p -= 1 * 60));
+							}}
+						>
+							<ChevronDown />
+						</button>
+					</section>
+
 					{formatTime(time)}
+
+					<section
+						className={`h-max text-center justify-between absolute space-y-4 right-3 flex flex-col transition-all duration-1000 ease-out ${running && "hidden"}`}
+					>
+						<button
+							className={`${(time % 60) + 5 >= 60 ? "text-muted-foreground/20" : "text-primary/80 hover:text-primary cursor-pointer"}`}
+							onClick={() => {
+								if ((time % 60) + 5 >= 60) return;
+								setTime((p) => (p += 5));
+							}}
+						>
+							<ChevronUp />
+						</button>
+
+						<button
+							className={`
+								${(time % 60) - 5 <= 0 ? "text-muted-foreground/20" : "text-primary/80 hover:text-primary cursor-pointer"}
+								`}
+							onClick={() => {
+								if ((time % 60) - 5 <= 0) return;
+								setTime((p) => (p -= 5));
+							}}
+						>
+							<ChevronDown />
+						</button>
+					</section>
 				</div>
 
 				<div className="relative h-10">
