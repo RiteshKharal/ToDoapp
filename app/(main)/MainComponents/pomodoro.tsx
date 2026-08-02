@@ -8,7 +8,7 @@ const InitialMODES = [
 	{ key: "pomodoro", label: "Pomodoro", length: 30 * 60 },
 	{ key: "short", label: "Short Break", length: 5 * 60 },
 	{ key: "long", label: "Long Break", length: 15 * 60 },
-];
+] as const;
 
 type ModeType = (typeof InitialMODES)[number];
 
@@ -19,29 +19,31 @@ function formatTime(seconds: number) {
 }
 
 export function Pomodoro() {
-	const [MODES, setMODES] = useState(InitialMODES);
+	const [MODES] = useState(InitialMODES);
 	const [CurrentMode, setCurrrentMode] = useState(0);
 	const mode: ModeType = MODES[CurrentMode];
 
-	// const [mode, setMode] = useState<Mode>(MODES[0]);
+	const [ModeLength, setModeLength] = useState(mode.length);
 	const [time, setTime] = useState(mode.length);
 	const [running, setRunning] = useState(false);
-	const { settings, setSettings } = useSettings();
-	const AudioRef = useRef<HTMLAudioElement>(null);
 
+	const { settings } = useSettings();
+	const AudioRef = useRef<HTMLAudioElement>(null);
 	const interval = useRef<number | null>(null);
 
 	useEffect(() => {
+		setModeLength(mode.length);
 		setTime(mode.length);
 		setRunning(false);
 	}, [mode]);
 
 	useEffect(() => {
 		if (!AudioRef.current) return;
+
 		AudioRef.current.volume = 1;
 
 		if (running) {
-			AudioRef.current.play();
+			AudioRef.current.play().catch(() => {});
 		} else {
 			AudioRef.current.pause();
 		}
@@ -49,13 +51,12 @@ export function Pomodoro() {
 
 	useEffect(() => {
 		if (!running) return;
+
 		interval.current = window.setInterval(() => {
 			setTime((t) => {
 				if (t <= 1) {
 					setRunning(false);
-					// setMode(MODES)
-
-					return mode.length;
+					return ModeLength;
 				}
 				return t - 1;
 			});
@@ -64,15 +65,18 @@ export function Pomodoro() {
 		return () => {
 			if (interval.current) clearInterval(interval.current);
 		};
-	}, [running, mode]);
+	}, [running, ModeLength]);
 
 	return (
 		<div
-			className={`flex justify-center transition-all duration-200 ease-out ${settings.appearance.PomodoroSize === "max" && "scale-130"} scale-115 p-5 mt-10`}
+			className={`flex justify-center transition-all duration-200 ease-out ${
+				settings.appearance.PomodoroSize === "max" ? "scale-130" : "scale-115"
+			} p-5 mt-10`}
 		>
 			{settings.appearance.PomodoroAudio && (
-				<audio src={"/BrownNoise.mp3"} loop ref={AudioRef} />
+				<audio src="/BrownNoise.mp3" loop ref={AudioRef} />
 			)}
+
 			<div className="bg-card w-full max-w-md rounded-xl p-5 flex flex-col gap-5">
 				<div className="mb-5 flex justify-center gap-2">
 					{MODES.map((m, i) => (
@@ -90,26 +94,32 @@ export function Pomodoro() {
 					))}
 				</div>
 
-				<div
-					className={`mb-6 text-center text-6xl font-semibold relative flex flex-col transition-all duration-1000 ease-in-out`}
-				>
+				<div className="mb-6 text-center text-6xl font-semibold relative flex flex-col transition-all duration-1000 ease-in-out">
 					<section
-						className={`h-max text-center justify-between absolute space-y-4 flex flex-col ${running && "hidden"}`}
+						className={`h-max text-center justify-between absolute space-y-4 flex flex-col ${
+							running || time !== ModeLength ? "hidden" : ""
+						}`}
 					>
 						<button
-							className={`text-primary/75 hover:text-primary cursor-pointer `}
+							className="text-primary/75 hover:text-primary cursor-pointer"
 							onClick={() => {
-								setTime((p) => (p += 1 * 60));
+								setModeLength((p) => p + 60);
+								setTime((p) => p + 60);
 							}}
 						>
 							<ChevronUp />
 						</button>
 
 						<button
-							className={`${time - 1 * 60 <= 0 ? "text-muted-foreground/20" : "text-primary/80 hover:text-primary cursor-pointer"}`}
+							className={`${
+								time - 60 <= 0
+									? "text-muted-foreground/20"
+									: "text-primary/80 hover:text-primary cursor-pointer"
+							}`}
 							onClick={() => {
-								if (time - 1 * 60 <= 0) return;
-								setTime((p) => (p -= 1 * 60));
+								if (time - 60 <= 0) return;
+								setModeLength((p) => p - 60);
+								setTime((p) => p - 60);
 							}}
 						>
 							<ChevronDown />
@@ -119,25 +129,35 @@ export function Pomodoro() {
 					{formatTime(time)}
 
 					<section
-						className={`h-max text-center justify-between absolute space-y-4 right-3 flex flex-col transition-all duration-1000 ease-out ${running && "hidden"}`}
+						className={`h-max text-center justify-between absolute space-y-4 right-3 flex flex-col transition-all duration-1000 ease-out ${
+							running || time !== ModeLength ? "hidden" : ""
+						}`}
 					>
 						<button
-							className={`${(time % 60) + 5 >= 60 ? "text-muted-foreground/20" : "text-primary/80 hover:text-primary cursor-pointer"}`}
+							className={`${
+								(time % 60) + 5 >= 60
+									? "text-muted-foreground/20"
+									: "text-primary/80 hover:text-primary cursor-pointer"
+							}`}
 							onClick={() => {
 								if ((time % 60) + 5 >= 60) return;
-								setTime((p) => (p += 5));
+								setModeLength((p) => p + 5);
+								setTime((p) => p + 5);
 							}}
 						>
 							<ChevronUp />
 						</button>
 
 						<button
-							className={`
-								${(time % 60) - 5 <= 0 ? "text-muted-foreground/20" : "text-primary/80 hover:text-primary cursor-pointer"}
-								`}
+							className={`${
+								(time % 60) - 5 < 0
+									? "text-muted-foreground/20"
+									: "text-primary/80 hover:text-primary cursor-pointer"
+							}`}
 							onClick={() => {
-								if ((time % 60) - 5 <= 0) return;
-								setTime((p) => (p -= 5));
+								if ((time % 60) - 5 < 0) return;
+								setModeLength((p) => p - 5);
+								setTime((p) => p - 5);
 							}}
 						>
 							<ChevronDown />
@@ -149,7 +169,7 @@ export function Pomodoro() {
 					<div className="absolute left-1/2 -translate-x-1/2">
 						<button
 							onClick={() => setRunning((v) => !v)}
-							className="bg-primary text-primary-foreground flex items-center gap-2 rounded-lg px-5 py-2  cursor-pointer"
+							className="bg-primary text-primary-foreground flex items-center gap-2 rounded-lg px-5 py-2 cursor-pointer"
 						>
 							{running ? <Pause size={18} /> : <Play size={18} />}
 							{running ? "Pause" : "Start"}
@@ -157,8 +177,8 @@ export function Pomodoro() {
 					</div>
 
 					<div
-						className={`absolute left-1/2 ml-20  transition-all duration-100 ${
-							time < mode.length
+						className={`absolute left-1/2 ml-20 transition-all duration-100 ${
+							time !== ModeLength
 								? "opacity-100 translate-x-0"
 								: "opacity-0 -translate-x-5 pointer-events-none"
 						}`}
@@ -166,9 +186,9 @@ export function Pomodoro() {
 						<button
 							onClick={() => {
 								setRunning(false);
-								setTime(mode.length);
+								setTime(ModeLength);
 							}}
-							className="bg-muted hover:bg-muted/80 rounded-lg p-2"
+							className="hover:bg-muted rounded-lg transition-colors duration-700 ease-in-out cursor-pointer p-2"
 						>
 							<RotateCcw size={18} />
 						</button>

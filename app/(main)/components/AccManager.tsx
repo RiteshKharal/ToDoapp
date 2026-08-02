@@ -112,149 +112,176 @@ export default function Accmanager({ cardtype }: AccManagerProps) {
 
 	function Login({ close }: { close: () => void }) {
 		return (
-			<div className="relative w-full max-w-md text-primary rounded-2xl p-8 flex flex-col bg-secondary transition-transform">
+			<div className="relative w-full max-w-xl rounded-3xl border border-border bg-card p-10 text-primary shadow-sm transition-all duration-100 ease-out">
 				<button
 					onClick={close}
-					className="absolute top-4 left-4 text-sm opacity-70 hover:opacity-100 cursor-pointer"
+					className="absolute left-6 top-6 rounded-full p-2 text-foreground/70 transition hover:bg-secondary hover:text-foreground cursor-pointer"
 				>
-					<X />
+					<X size={20} />
 				</button>
 
-				<h2 className="text-xl font-semibold text-center mb-8">
-					Log onto Account
-				</h2>
+				<div className="mb-8 text-center">
+					<h2 className="text-3xl font-semibold text-foreground">
+						Welcome back
+					</h2>
+					<p className="mt-2 text-sm text-muted-foreground">
+						Log in to continue to your account
+					</p>
+				</div>
 
-				<form onSubmit={HandleLogSubmit}>
-					<div className="flex flex-col gap-5 flex-1">
-						<div className="transition-transform">
-							<input
-								type="email"
-								placeholder="Email"
-								className={`w-full p-3 rounded-lg outline-none focus:ring-1  border border-border ${FormError ? "focus:ring-primary/20" : "focus:ring-primary/10"} `}
-								name="email"
-								required
-							/>
-						</div>
+				<form onSubmit={HandleLogSubmit} className="space-y-5">
+					<div className="space-y-2 flex flex-col">
+						<label className="text-sm font-medium text-foreground flex flex-col text-left">
+							Email
+						</label>
+						<input
+							type="email"
+							name="email"
+							placeholder="Enter your email"
+							required
+							className={`h-13 w-full rounded-xl border border-border bg-background px-4 text-base text-foreground outline-none transition focus:border-primary/30 focus:ring-2 ${
+								FormError ? "focus:ring-primary/20" : "focus:ring-primary/10"
+							}`}
+						/>
+					</div>
 
-						<div className="transition-transform">
-							<input
-								type="password"
-								placeholder="Password"
-								name="password"
-								className="w-full p-3 rounded-lg outline-none focus:ring-1 focus:ring-primary/10 border border-border"
-								required
-							/>
+					<div className="space-y-2 flex flex-col">
+						<label className="text-sm font-medium text-foreground text-left">
+							Password
+						</label>
+						<input
+							type="password"
+							name="password"
+							placeholder="Enter your password"
+							required
+							className="h-13 w-full rounded-xl border border-border bg-background px-4 text-base text-foreground outline-none transition focus:border-primary/30 focus:ring-2 focus:ring-primary/10"
+						/>
 
+						{FormError && (
 							<span
-								className={`font-medium leading-relaxed text-sm ml-2 mt-4 italic text-start block ${fonts.workSans.className} transition-transform animate-[FlowIn_0.4s_ease_forwards]`}
+								className={`block text-sm text-red-500 ${fonts.workSans.className} animate-[FlowIn_0.3s_ease_forwards]`}
 							>
 								{FormError}
 							</span>
-						</div>
+						)}
 					</div>
 
 					<button
 						type="submit"
-						className="mt-8 w-20 p-3 rounded-xl font-medium text-primary-foreground bg-primary hover:bg-primary/90 transition-colors cursor-pointer"
+						className="mt-4 flex h-13 w-full items-center justify-center rounded-xl bg-primary text-base font-medium text-primary-foreground transition hover:bg-primary/90 cursor-pointer"
 					>
-						<div className="flex items-center justify-center text-center">
-							{loading ? (
-								<Loader className="animate-[spin_2s_linear_infinite] transition-transform" />
-							) : (
-								"Log in"
-							)}
-						</div>
+						{loading ? <Loader className="h-5 w-5 animate-spin" /> : "Log in"}
 					</button>
 				</form>
 
-				<small className="mt-5 ">
-					<button
-						onClick={() => {
-							setAuthMode("signup");
-							setFormError(null);
-						}}
-						className="cursor-pointer"
-					>
-						Don't have a account? Click here to sign up
-					</button>
-				</small>
+				<div className="mt-8 border-t border-border pt-6 text-center">
+					<p className="text-sm text-muted-foreground">
+						Don't have an account?{" "}
+						<button
+							onClick={() => {
+								setAuthMode("signup");
+								setFormError(null);
+							}}
+							className="font-medium text-primary hover:underline cursor-pointer"
+						>
+							Create one
+						</button>
+					</p>
+				</div>
 			</div>
 		);
 	}
 
 	function Signup({ close }: { close: () => void }) {
 		return (
-			<div className="relative w-full max-w-md text-primary rounded-2xl p-8 flex flex-col bg-secondary transition-transform">
+			<div className="relative w-full max-w-xl rounded-3xl border border-border bg-card p-10 text-primary shadow-sm">
 				<button
 					onClick={close}
-					className="absolute top-4 left-4 text-sm opacity-70 hover:opacity-100 cursor-pointer"
+					className="absolute left-6 top-6 rounded-full p-2 text-foreground/70 transition hover:bg-secondary hover:text-foreground cursor-pointer"
 				>
-					<X />
+					<X size={20} />
 				</button>
 
-				<h2 className="text-xl font-semibold text-center mb-8">
-					Create Account
-				</h2>
+				<div className="mb-8 text-center">
+					<h2 className="text-3xl font-semibold text-foreground">
+						Create account
+					</h2>
+					<p className="mt-2 text-sm text-muted-foreground">
+						Create an account to continue
+					</p>
+				</div>
 
-				<form onSubmit={HandleSignSubmit}>
-					<div className="flex flex-col gap-5 flex-1">
-						<div className="transition-transform">
-							<input
-								type="text"
-								name="name"
-								placeholder="Username"
-								className="w-full p-3 rounded-lg text-foreground outline-none focus:ring-1 focus:ring-primary/10 transition-all border border-border"
-							/>
-						</div>
+				<form onSubmit={HandleSignSubmit} className="space-y-5">
+					<div className="space-y-2 flex flex-col">
+						<label className="text-sm font-medium text-foreground text-left ">
+							Username
+						</label>
+						<input
+							type="text"
+							name="name"
+							placeholder="Enter your username"
+							className="h-13 w-full rounded-xl border border-border bg-background px-4 text-base text-foreground outline-none transition focus:border-primary/30 focus:ring-2 focus:ring-primary/10"
+						/>
+					</div>
 
-						<div className="transition-transform">
-							<input
-								type="email"
-								name="email"
-								placeholder="Email"
-								className="w-full p-3 rounded-lg text-foreground outline-none focus:ring-1 focus:ring-primary/10 transition-all border border-border"
-							/>
-						</div>
+					<div className="space-y-2 flex flex-col">
+						<label className="text-sm font-medium text-foreground text-left">
+							Email
+						</label>
+						<input
+							type="email"
+							name="email"
+							placeholder="Enter your email"
+							className="h-13 w-full rounded-xl border border-border bg-background px-4 text-base text-foreground outline-none transition focus:border-primary/30 focus:ring-2 focus:ring-primary/10"
+						/>
+					</div>
 
-						<div className="transition-transform">
-							<input
-								type="password"
-								name="password"
-								placeholder="Password"
-								className="w-full p-3 rounded-lg text-foreground outline-none focus:ring-1 focus:ring-primary/10 transition-all border border-border"
-							/>
+					<div className="space-y-2 flex flex-col">
+						<label className="text-sm font-medium text-foreground text-left">
+							Password
+						</label>
+						<input
+							type="password"
+							name="password"
+							placeholder="Create a password"
+							className="h-13 w-full rounded-xl border border-border bg-background px-4 text-base text-foreground outline-none transition focus:border-primary/30 focus:ring-2 focus:ring-primary/10"
+						/>
+
+						{FormError && (
 							<span
-								className={`font-medium leading-relaxed text-sm ml-2 mt-1 italic text-start block ${fonts.workSans.className} animate-[FlowIn_0.4s_ease_forwards]`}
+								className={`block text-sm text-red-500 ${fonts.workSans.className} animate-[FlowIn_0.3s_ease_forwards]`}
 							>
 								{FormError}
 							</span>
-						</div>
+						)}
 					</div>
 
 					<button
 						type="submit"
-						className="mt-8 w-30 p-3 rounded-xl font-medium text-primary-foreground bg-primary hover:bg-primary/90 transition-colors cursor-pointer"
+						className="mt-4 flex h-13 w-full items-center justify-center rounded-xl bg-primary text-base font-medium text-primary-foreground transition hover:bg-primary/90 cursor-pointer"
 					>
-						<div className="flex items-center justify-center text-center">
-							{loading ? (
-								<Loader className="animate-[spin_2s_linear_infinite] transition-transform" />
-							) : (
-								"Sign Up"
-							)}
-						</div>
+						{loading ? (
+							<Loader className="h-5 w-5 animate-spin" />
+						) : (
+							"Create account"
+						)}
 					</button>
 				</form>
-				<small>
-					<button
-						onClick={() => {
-							setAuthMode("login");
-							setFormError(null);
-						}}
-						className="mt-5 cursor-pointer"
-					>
-						Already got a account? Click here to login
-					</button>
-				</small>
+
+				<div className="mt-8 border-t border-border pt-6 text-center">
+					<p className="text-sm text-muted-foreground">
+						Already have an account?{" "}
+						<button
+							onClick={() => {
+								setAuthMode("login");
+								setFormError(null);
+							}}
+							className="font-medium text-primary hover:underline cursor-pointer"
+						>
+							Log in
+						</button>
+					</p>
+				</div>
 			</div>
 		);
 	}
@@ -263,14 +290,7 @@ export default function Accmanager({ cardtype }: AccManagerProps) {
 		<>
 			{!isPending && user ? (
 				<div
-					className={`
-                flex items-center gap-2
-                rounded-2xl
-                backdrop-blur-md
-                transition-all duration-200
-                cursor-pointer
-                ${fonts.comfortaa.className}
-              `}
+					className={` flex items-center gap-2 rounded-2xl backdrop-blur-md transition-all duration-200 cursor-pointer ${fonts.comfortaa.className} `}
 				>
 					<MdAccountCircle className="text-2xl text-primary" />
 					<span className="text-[1rem] font-medium">{user.user.name}</span>
@@ -278,16 +298,7 @@ export default function Accmanager({ cardtype }: AccManagerProps) {
 			) : (
 				<div
 					onClick={() => setAuthMode("signup")}
-					className={`
-                rounded-2xl
-                text-primary
-                text-sm font-semibold
-                hover:shadow-lg
-                hover:scale-105
-                transition-all duration-200
-                cursor-pointer
-                ${fonts.cabin.className}
-              `}
+					className={` rounded-2xl text-primary text-sm font-semibold hover:shadow-lg hover:scale-105 transition-all duration-200 cursor-pointer ${fonts.cabin.className} `}
 				>
 					Sign Up
 				</div>
