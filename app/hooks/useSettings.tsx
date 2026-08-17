@@ -43,7 +43,9 @@ export function SettingsProvider({
 
 		if (local) {
 			try {
-				setSettingsState(JSON.parse(local));
+				const s = JSON.parse(local);
+				if (typeof s === typeof DefaultSettings) setSettingsState(s);
+
 				return;
 			} catch {}
 		}

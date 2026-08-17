@@ -32,11 +32,8 @@ export async function UpdateLocalSettings({
 		local ? JSON.parse(local) : DefaultSettings,
 	);
 
-	console.log(LocalSaved);
+	const NewLocal = merge(LocalSaved, settings);
 
-	const updated = merge(DefaultSettings, settings) as SettingsType;
-
-	const NewLocal = merge(LocalSaved, updated);
 	const changes = DeepDiff(DefaultSettings, NewLocal);
 
 	localStorage.setItem("settings", JSON.stringify(changes));
