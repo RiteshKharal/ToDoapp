@@ -3,6 +3,7 @@
 import {
 	createContext,
 	useContext,
+	useEffect,
 	useState,
 	type Dispatch,
 	type SetStateAction,
@@ -13,6 +14,8 @@ import { DefaultSettings } from "@/server/settings/default";
 import { UpdateSettings } from "@/server/settings/actions";
 import { DeepDiff } from "@/logics/DeepDiff";
 import { DeepPartial } from "@/logics/DeepPartial";
+import { useSession } from "@/lib/auth-client";
+import { UpdateLocalSettings } from "@/server/settings/local";
 
 type SettingsContextType = {
 	settings: SettingsType;
@@ -29,16 +32,34 @@ export function SettingsProvider({
 	initial: SettingsType;
 	children: React.ReactNode;
 }) {
+	const session = useSession();
+
 	const [settings, setSettingsState] = useState(initial);
+
+	useEffect(() => {
+		if (session.data?.user || typeof window === "undefined") return;
+
+		const local = localStorage.getItem("settings");
+
+		if (local) {
+			try {
+				setSettingsState(JSON.parse(local));
+				return;
+			} catch {}
+		}
+	}, []);
 
 	async function setSettings(NewSettings: DeepPartial<SettingsType>) {
 		const merged = merge(settings, NewSettings) as SettingsType;
 
 		setSettingsState(merged);
 
-		// const diffed = DeepDiff(DefaultSettings, merged) as DeepPartial;
-
 		try {
+			if (!session.data?.user) {
+				await UpdateLocalSettings({ settings: NewSettings });
+
+				return;
+			}
 			await UpdateSettings({ settings: NewSettings });
 		} catch (er) {
 			console.log("Could not update settings. ", er);

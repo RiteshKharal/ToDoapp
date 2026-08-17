@@ -35,19 +35,12 @@ export function TaskCard({
 			type="button"
 			aria-pressed={checked}
 			// title="Mark as Done"
-			className={`
-                    w-full rounded-2xl
-                    min-h-20
-                    transition-all duration-300 ease-out
-                    border
-                    active:scale-102
-                    focus:outline-none cursor-pointer overflow-hidden
-                    grid grid-cols-[1fr_56px]   
-                    ${
-											completed
-												? "bg-primary/15 border-primary/10 hover:bg-primary/17"
-												: "bg-foreground/5 border-foreground/7 hover:bg-foreground/10"
-										}
+			className={` w-full rounded-2xl min-h-20 transition-all duration-300 ease-out border active:scale-102 focus:outline-none cursor-pointer overflow-hidden grid grid-cols-[1fr_56px]   
+				${
+					completed
+						? "bg-primary/15 border-primary/10 hover:bg-primary/17"
+						: "bg-foreground/5 border-foreground/7 hover:bg-foreground/10"
+				}
                     `}
 		>
 			<div

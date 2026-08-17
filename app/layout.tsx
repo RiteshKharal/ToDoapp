@@ -146,32 +146,6 @@ export default async function RootLayout({
 			>
 				<ThemeProviderWrapper>
 					<SettingsProvider initial={settings!}>
-						{/* <main
-							className={`w-full transition-[width] duration-200 ease-out ${settings?.appearance.width === "medium" ? "max-w-3xl" : "max-w-6xl"}`}
-						>
-							<nav className="top-10 flex justify-between animate-[StretchIn_0.2s_ease-in] py-5">
-								<div className={`text-xl ${fonts.lilitaOne.className} `}>
-									Tudor
-								</div>
-
-								<div>
-									<div className="flex flex-row gap-5 text-center justify-center ">
-										<Accmanager cardtype="signup" />
-
-										<div>
-											<a href="/settings">
-												<IoSettings
-													cursor="pointer"
-													className=" text-xl hover:animate-[Rotate180_1s_infinite] "
-												/>
-											</a>
-										</div>
-									</div>
-								</div>
-							</nav>
-
-							{children}
-						</main> */}
 						<MainLayoutContainer>{children}</MainLayoutContainer>
 					</SettingsProvider>
 				</ThemeProviderWrapper>

@@ -13,7 +13,7 @@ export async function GetSettings({
 	userId,
 }: {
 	userId?: string;
-}): Promise<SettingsType | undefined> {
+}): Promise<SettingsType> {
 	let id = userId;
 
 	if (!id) {
@@ -26,7 +26,9 @@ export async function GetSettings({
 		}
 	}
 
-	if (!id) return DefaultSettings;
+	if (!id) {
+		return DefaultSettings;
+	}
 
 	try {
 		const user = await prisma.user.findUnique({
@@ -46,6 +48,7 @@ export async function GetSettings({
 		return stings;
 	} catch (er) {
 		console.error("Error getting the user. ", er);
+		return DefaultSettings;
 	}
 }
 
@@ -64,13 +67,14 @@ export async function UpdateSettings({
 		id = session?.user.id;
 	}
 
-	if (!id) return;
+	if (!id) {
+		return;
+	}
 
 	try {
 		const merged = (merge(DefaultSettings, settings) as SettingsType) ?? {};
 
 		const NewSettings = DeepDiff(DefaultSettings, merged) ?? {};
-
 
 		await prisma.settings.upsert({
 			where: {

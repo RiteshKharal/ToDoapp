@@ -1,4 +1,4 @@
-import { appearance } from "./options/appearance";
+import { appearance } from "./defaults/appearance";
 
 export const DefaultSettings = {
 	appearance,
